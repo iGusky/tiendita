@@ -29,9 +29,19 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        $validated = $request->validate([
+            'code' => 'required|string|max:20',
+            'description' => 'required|string|max:255',
+            'price' => 'required|numeric|min:1',
+            'stock' => 'required|numeric|min:1',
+        ]);
+
+        $product = new Product();
+        $product = $validated;
+        $product->save();
+        return redirect(route('productos.create'));
     }
 
     /**

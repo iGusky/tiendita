@@ -10,6 +10,7 @@ class Product extends Model
         'code',
         'description',
         'price',
+        'stock'
     ];
     protected $primaryKey = 'code';
     public $incrementing = false;

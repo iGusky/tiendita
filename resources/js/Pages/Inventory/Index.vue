@@ -14,10 +14,12 @@ import {faPlus} from "@fortawesome/free-solid-svg-icons";
     <AuthenticatedLayout>
         <div class="mt-8 mx-8">
             <div class="flex justify-end">
-            <Link class="bg-white rounded-xl p-5 shadow-lg group hover:bg-neutral-400 hover:text-white w-full sm:w-fit" :href="route('producto.create')">
-                <FontAwesomeIcon :icon="faPlus" class="mr-2 text-blue-600 group-hover:text-white"/>
-                <span>REGISTRAR PRODUCTO</span>
-            </Link>
+                <Link
+                    class="bg-white rounded-xl p-5 shadow-lg group hover:bg-neutral-400 hover:text-white w-full sm:w-fit"
+                    :href="route('productos.create')">
+                    <FontAwesomeIcon :icon="faPlus" class="mr-2 text-blue-600 group-hover:text-white"/>
+                    <span>REGISTRAR PRODUCTO</span>
+                </Link>
             </div>
         </div>
     </AuthenticatedLayout>

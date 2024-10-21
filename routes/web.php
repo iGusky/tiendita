@@ -25,12 +25,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/inventario', function() {
+Route::get('/inventario', function () {
     return Inertia::render('Inventory/Index');
 })->middleware(['auth', 'verified'])->name('inventory');
 
-Route::resource('/producto', ProductController::class)
+Route::resource('productos', ProductController::class)
     ->only(['create', 'store', 'edit', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
