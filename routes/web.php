@@ -30,7 +30,6 @@ Route::get('/inventario', function () {
 })->middleware(['auth', 'verified'])->name('inventory');
 
 Route::resource('productos', ProductController::class)
-    ->only(['create', 'store', 'edit', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';

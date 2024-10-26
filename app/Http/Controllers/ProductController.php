@@ -13,9 +13,10 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        $products = Product::all();
+        return Inertia::render('Inventory/Index', ['products' => $products]);
     }
 
     /**
@@ -38,9 +39,7 @@ class ProductController extends Controller
             'stock' => 'required|numeric|min:1',
         ]);
 
-        $product = new Product();
-        $product = $validated;
-        $product->save();
+        Product::create($request->all());
         return redirect(route('productos.create'));
     }
 
