@@ -8,12 +8,30 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import InputError from "@/Components/InputError.vue";
 import {Link} from '@inertiajs/vue3';
 
-const product = useForm({
-    code: '',
-    description: '',
-    price: 0,
-    stock: 0,
-})
+const props = defineProps({
+    product: {
+        type: Object,
+        default: {
+            code: '',
+            description: '',
+            price: 0,
+            stock: 0
+        },
+    },
+    isUpdating: {
+        type: Boolean,
+        default: false,
+    },
+});
+
+const product = useForm(props.product)
+console.log(props.isUpdating)
+const handleSubmitProduct = () => {
+    if (!props.isUpdating)
+        return product.post(route('productos.store'))
+    return product.put(route('productos.update', props.product.code))
+}
+
 const handleCancel = () => {
     window.location.href = route('productos.index')
 }
@@ -23,11 +41,11 @@ const handleCancel = () => {
     <Head title="Agregar producto"/>
     <AuthenticatedLayout>
         <div class="flex justify-center pt-10">
-            <form @submit.prevent="product.post(route('productos.store'), {onSuccess: ()  => product.reset()})"
+            <form @submit.prevent="handleSubmitProduct"
                   class="bg-white w-fit h-fit p-10 rounded-2xl shadow-lg">
                 <div>
                     <InputLabel>Código *</InputLabel>
-                    <TextInput v-model="product.code"></TextInput>
+                    <TextInput v-model="product.code" :disabled="isUpdating"></TextInput>
                     <InputError :message="product.errors.code" class="mt-2"/>
                 </div>
                 <div>
@@ -52,7 +70,7 @@ const handleCancel = () => {
                     <SecondaryButton>
                         <Link :href="route('productos.index')">Cancelar</Link>
                     </SecondaryButton>
-                    <PrimaryButton>Guardar</PrimaryButton>
+                    <PrimaryButton>{{ isUpdating ? 'Actualizar' : 'Guardar' }}</PrimaryButton>
                 </div>
             </form>
         </div>

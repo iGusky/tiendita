@@ -40,7 +40,9 @@ class ProductController extends Controller
         ]);
 
         Product::create($request->all());
-        return redirect(route('productos.create'));
+        return redirect()
+            ->route('productos.index')
+            ->with('message', 'Producto agregado correctamente');
     }
 
     /**
@@ -54,17 +56,38 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit($code)
     {
-        //
+
+        $product = Product::find($code);
+        return inertia(
+            'Inventory/AddProduct',
+            [
+                'product' => $product,
+                'isUpdating' => true
+            ]
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $code)
     {
-        //
+        $validated = $request->validate([
+            'code' => 'required|string|max:20',
+            'description' => 'required|string|max:255',
+            'price' => 'required|numeric|min:1',
+            'stock' => 'required|numeric|min:1',
+        ]);
+
+        $product = Product::find($code);
+        $product->update($validated);
+        $product->save();
+
+        return redirect()
+            ->route('productos.index')
+            ->with('message', 'Producto actualizado correctamente');
     }
 
     /**

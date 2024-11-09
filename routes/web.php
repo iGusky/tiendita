@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use \App\Http\Controllers\ProductController;
+use App\Models\Product;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -31,5 +32,8 @@ Route::get('/inventario', function () {
 
 Route::resource('productos', ProductController::class)
     ->middleware(['auth', 'verified']);
+Route::get('/productos/{producto}/editar', function (Product $producto) {
+    return $producto->code;
+});
 
 require __DIR__ . '/auth.php';
