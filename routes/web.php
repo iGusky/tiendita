@@ -32,8 +32,8 @@ Route::get('/inventario', function () {
 
 Route::resource('productos', ProductController::class)
     ->middleware(['auth', 'verified']);
-Route::get('/productos/{producto}/editar', function (Product $producto) {
-    return $producto->code;
-});
+
+Route::get('/productos/{producto}/toggle', [ProductController::class, 'toggle'])
+    ->name('productos.toggle');
 
 require __DIR__ . '/auth.php';

@@ -7,14 +7,41 @@ import {faPlus, faEllipsisH, faEdit, faTrashCan, faEye, faEyeSlash} from "@forta
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import {useToast} from "vue-toastification";
+import Swal from 'sweetalert2'
+import {inject} from 'vue';
+import {router} from '@inertiajs/vue3'
+
+
+const route = inject('route');
 
 defineProps({
     products: Array
 })
 
+
 const page = usePage()
 if (page.props.flash.message) {
     useToast().success(page.props.flash.message)
+}
+
+const handleDeleteProduct = (product) => {
+    Swal.fire({
+        icon: "warning",
+        title: "¿Estas seguro de eliminar este producto?",
+        text: "Esta acción no se puede deshacer",
+        showCancelButton: true,
+        confirmButtonText: "Si, eliminar",
+        denyButtonText: `No, cancelar`
+    }).then((result) => {
+        if (result.isConfirmed) {
+            return router.delete(`/productos/${product.code}`, {
+                onSuccess: (data) => {
+                    console.log(data);
+                }
+            })
+        }
+    })
+
 }
 
 </script>
@@ -65,11 +92,11 @@ if (page.props.flash.message) {
                                         <FontAwesomeIcon :icon="faEdit" class="mr-2"/>
                                         <span>Editar</span>
                                     </DropdownLink>
-                                    <DropdownLink>
-                                        <FontAwesomeIcon :icon="faEye" class="mr-2"/>
+                                    <DropdownLink :href="route('productos.toggle', p.code)">
+                                        <FontAwesomeIcon :icon="faEyeSlash" class="mr-2"/>
                                         <span>Desactivar</span>
                                     </DropdownLink>
-                                    <DropdownLink>
+                                    <DropdownLink @click="() => handleDeleteProduct(p)">
                                         <FontAwesomeIcon :icon="faTrashCan" class="mr-2"/>
                                         <span>Eliminar</span>
                                     </DropdownLink>

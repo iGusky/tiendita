@@ -7,6 +7,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Inertia\ResponseFactory;
+
 
 class ProductController extends Controller
 {
@@ -93,8 +95,23 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy($code): Response
     {
-        //
+        $product = Product::find($code);
+        $result = $product->delete();
+        return Inertia::render('Inventory/Index', [
+            "message" => "Producto eliminado correctamente",
+            "done" => true
+        ]);
+    }
+
+    public function toggle($code)
+    {
+        $product = Product::find($code);
+        if ($product->deleted_at == null) $product->delete();
+        else $product->restore();
+        return redirect()
+            ->route('productos.index')
+            ->with('message', 'Operación realizada correctamente');
     }
 }

@@ -25,7 +25,6 @@ const props = defineProps({
 });
 
 const product = useForm(props.product)
-console.log(props.isUpdating)
 const handleSubmitProduct = () => {
     if (!props.isUpdating)
         return product.post(route('productos.store'))
