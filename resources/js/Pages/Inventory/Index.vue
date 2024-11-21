@@ -15,16 +15,16 @@ import {router} from '@inertiajs/vue3'
 const route = inject('route');
 
 defineProps({
-    products: Array
+    products: Array<any>
 })
 
 
-const page = usePage()
+const page: any = usePage()
 if (page.props.flash.message) {
-    useToast().success(page.props.flash.message)
+    useToast().success(page.props.flash.message!)
 }
 
-const handleDeleteProduct = (product) => {
+const handleDeleteProduct = (product: any) => {
     Swal.fire({
         icon: "warning",
         title: "¿Estas seguro de eliminar este producto?",
@@ -75,7 +75,7 @@ const handleDeleteProduct = (product) => {
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="p in products" :key="p.code" class="hover:bg-gray-100 border">
+                    <tr v-for="(p) in products" :key="p.code" class="hover:bg-gray-100 border">
                         <td class="py-4 text-center">{{ p.code }}</td>
                         <td class="py-4 pl-2">{{ p.description }}</td>
                         <td class="py-4 text-center">$ {{ p.price }}</td>
@@ -96,7 +96,7 @@ const handleDeleteProduct = (product) => {
                                         <FontAwesomeIcon :icon="faEyeSlash" class="mr-2"/>
                                         <span>Desactivar</span>
                                     </DropdownLink>
-                                    <DropdownLink @click="() => handleDeleteProduct(p)">
+                                    <DropdownLink @click="() => handleDeleteProduct(p)" href="null">
                                         <FontAwesomeIcon :icon="faTrashCan" class="mr-2"/>
                                         <span>Eliminar</span>
                                     </DropdownLink>
