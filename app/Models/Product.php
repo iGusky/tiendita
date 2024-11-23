@@ -11,7 +11,7 @@ class Product extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $table = 'inventory.products';
+    protected $table = 'products';
     protected $primaryKey = 'code';
     public $incrementing = false;
     protected $keyType = 'string';
